@@ -5,6 +5,7 @@ from aiogram.fsm.state import StatesGroup, State
 # from model.feedback import Feedback
 from keyboards import get_general_kb, get_scores_keyboard
 
+
 class GeneralStates(StatesGroup):
     start = State()
     registration = State()
@@ -16,10 +17,17 @@ router = Router()
 
 @router.message(StateFilter(None), Command('start'))
 async def start_handler(message: types.Message, state: FSMContext):
+    await message.answer(f'{message.chat.id}')
     await message.answer('Привет, я создан для спорта. Для регистрации напишите \n/registration\n'
                          'если уже зарегестрированы напишите \n/login\n'
                          'или нажмите соответствующие кнопки', reply_markup=get_general_kb())
     await state.set_state(GeneralStates.start)
+
+
+@router.message(Command('help'))
+async def start_handler(message: types.Message, state: FSMContext):
+    await message.answer('Помогити')
+
 
 
 

@@ -1,34 +1,51 @@
 import sqlite3
 
+class Training_sessions:
+    pass
+
+class Training:
+    pass
+
 
 class User:
 
-    def __init__(self, name: str, phone: str, surname: str = None, email: str = None):
-        self._name = name
-        self._phone = phone
-        self._surname = surname
-        self._email = email
+    def __init__(self, id: int, name: str, verification: bool, password: str):
+        self.__id = id
+        self.__name = name
+        self.__verification = verification
+        self.__password = password
+        self.__training_session = Training_sessions()
 
-    @property
-    def name(self):
-        return self._name
 
-    @property
-    def phone(self):
-        return self._phone
 
-    @property
-    def surname(self):
-        return self._surname
-
-    @property
-    def email(self):
-        return self._email
-
-    def __str__(self):
-        contact_info = f"Имя: {self._name}, номер телефона: {self._phone}"
-        return contact_info
-
+# class User:
+#
+#     def __init__(self, name: str, phone: str, surname: str = None, email: str = None):
+#         self._name = name
+#         self._phone = phone
+#         self._surname = surname
+#         self._email = email
+#
+#     @property
+#     def name(self):
+#         return self._name
+#
+#     @property
+#     def phone(self):
+#         return self._phone
+#
+#     @property
+#     def surname(self):
+#         return self._surname
+#
+#     @property
+#     def email(self):
+#         return self._email
+#
+#     def __str__(self):
+#         contact_info = f"Имя: {self._name}, номер телефона: {self._phone}"
+#         return contact_info
+#
 
 class ContactBook:
 
