@@ -6,6 +6,39 @@ class Training_sessions:
 class Training:
     pass
 
+class DB:
+        
+    def __init__(self):
+        self.connection = sqlite3.connect("users.db")
+        self.cursor = self._connection.cursor()
+        self._initialize()
+
+    def _initialize(self):
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS Contacts (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_user INTEGER NOT NULL,
+                user_name    TEXT NOT NULL,
+                verification BOOL,
+                password   TEXT
+            );
+        """)
+
+    def add_user(self, data):
+        id_user = data.id
+        user_name = data.name
+        verification = data.verification
+        password = data.password
+
+
+        self.cursor.execute(f"""
+    INSERT INTO Contacts(id_user, user_name, verification, password) VALUES
+        (?, ?, ?, ?)                             
+    """,
+                        (id_user, user_name, verification, password)
+                        )
+
+
 
 class User:
 

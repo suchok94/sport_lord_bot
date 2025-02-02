@@ -10,7 +10,14 @@ def get_general_kb():
     builder.adjust(1)
     return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
+def get_yes_no_kb():
+    builder = ReplyKeyboardBuilder()
 
+    builder.button(text='Да')
+    builder.button(text='Нет')
+
+    builder.adjust(1)
+    return builder.as_markup(resize_keyboard=True, one_time_keyboard=True)
 
 def get_scores_keyboard():
     builder = ReplyKeyboardBuilder()
