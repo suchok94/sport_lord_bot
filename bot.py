@@ -5,6 +5,7 @@ from aiogram import Bot, Dispatcher
 from config import TOKEN
 from handlers import general, registration, users
 
+
 async def main():
     bot = Bot(token=TOKEN)
 

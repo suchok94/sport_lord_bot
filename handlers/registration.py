@@ -3,7 +3,7 @@ from aiogram.filters import Command, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from .general import GeneralStates
-from .db_functions import DB
+from model import Database, User
 
 # from .db_functions import
 
@@ -19,6 +19,7 @@ class RegistrationStates(StatesGroup):
     
 
 router = Router()
+database = {}
 
 
 @router.message(StateFilter(GeneralStates.start), Command('registration'))
@@ -38,22 +39,37 @@ async def name_handler(message: types.Message, state: FSMContext):
 async def password_handler(message: types.Message, state: FSMContext):
     await message.answer('Раз он нужен, то введи пароль')
     await state.update_data(verification= True)
-    await state.set_state(RegistrationStates.password)
+    await state.set_state(RegistrationStates.final)
 
 @router.message(StateFilter(RegistrationStates.verification), F.text.lower()=='нет')
 async def password_handler(message: types.Message, state: FSMContext):
+    await message.answer('не нужен')
+    await message.answer('Регистрация завершена')
     await state.update_data(verification= False)
-    await state.set_state(RegistrationStates.final)
+    data = await state.get_data()
+    id = data['id']
+    name = data['name']
+    verification = data['verification']
+    password = None
+    user = User(id, name, verification, password)
 
-@router.message(StateFilter(RegistrationStates.password), F.text)
-async def password_handler(message: types.Message, state: FSMContext):
-    await message.answer('Пароль сохранён')
-    await state.update_data(password= message.text)
-    await state.set_state(RegistrationStates.final)
+    # как то нужно вынести базу!
+
+    if id not in database:
+        database[id] = Database()
+    database[id].add_user(user)
+    
+    await state.clear()
+
+# @router.message(StateFilter(RegistrationStates.password), F.text)
+# async def password_handler(message: types.Message, state: FSMContext):
+#     await message.answer('Пароль сохранён')
+#     await state.update_data(password= message.text)
+#     await state.set_state(RegistrationStates.final)
 
 @router.message(StateFilter(RegistrationStates.final), F.text)
 async def final_registration(message: types.Message, state:FSMContext):
     await message.answer('Регистрация завершена')
-    data = await state.get_data()
-    await DB.add_user(db, data)
+    # data = await state.get_data()
+    # await DB.add_user(db, data)
     await state.clear()
